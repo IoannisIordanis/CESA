@@ -1,5 +1,7 @@
 # utils.py
+
 import sys
+import pdmlabs
 try:
     import pdmlabs
     sys.modules['OnlineADEngine'] = pdmlabs
@@ -11,17 +13,33 @@ import numpy as np
 from OnlineADEngine.utils.dataset import Dataset
 
 
+# ============================================================================
+# Scania dataset source lists
+# ============================================================================
+
 def get_scania_train_sources():
-    return ['52', '197', '7905', '2089', '690', '18926', '2205', '10111', '273', '3307', '2187', '25625', '821', '161', '16328', '1246', '234', '206', '3942', '185', '7684', '1638', '7961', '11593', '1783', '20417', '775', '20951', '1876', '241', '1988', '2257', '1787', '1709', '4686', '269']
+    """Return the list of source IDs used for training in the SCANIA dataset."""
+    return ['52', '197', '7905', '2089', '690', '18926', '2205', '10111', '273', '3307',
+            '2187', '25625', '821', '161', '16328', '1246', '234', '206', '3942', '185',
+            '7684', '1638', '7961', '11593', '1783', '20417', '775', '20951', '1876',
+            '241', '1988', '2257', '1787', '1709', '4686', '269']
 
 
 def get_scania_val_sources():
-    return ['2122', '18297', '20021', '2265', '1968', '7854', '84', '1646', '116', '8771', '3271', '2213']
+    """Return the list of source IDs used for validation in the SCANIA dataset."""
+    return ['2122', '18297', '20021', '2265', '1968', '7854', '84', '1646', '116',
+            '8771', '3271', '2213']
+
 
 def get_scania_test_sources():
-    return ['1661', '11251', '255', '1656', '1301', '32842', '1644', '228', '4304', '721', '1950', '11496', '2672']
+    """Return the list of source IDs used for testing in the SCANIA dataset."""
+    return ['1661', '11251', '255', '1656', '1301', '32842', '1644', '228', '4304',
+            '721', '1950', '11496', '2672']
 
 
+# ============================================================================
+# Dataset configuration
+# ============================================================================
 
 dataset_info = {
     "PBC": {
@@ -32,13 +50,11 @@ dataset_info = {
         "path": "Data/HNF/HNEI_combined.csv",
         "timestamp_column": "Artificial_timestamp",
         "target": "RUL",
-        "train_sources": ["a","b","c","d","e","f","g","n"],
-        "val_sources": ["l","j","o"],
-        "test_sources": ["t","s","p"],
+        "train_sources": ["a", "b", "c", "d", "e", "f", "g", "n"],
+        "val_sources": ["l", "j", "o"],
+        "test_sources": ["t", "s", "p"],
         "non_actionable_features": {'Decrement 3.6-3.4V (s)'},
         "non_actionable_original": ['Decrement 3.6-3.4V (s)'],
-        # "non_actionable_features": {},
-        # "non_actionable_original": [],
     },
     "SCANIA": {
         "path": "Data/SCANIA/SCANIA_rtf.csv",
@@ -49,8 +65,42 @@ dataset_info = {
         "test_sources": get_scania_test_sources(),
         "no_event_value": None,
         "limit": False,
-        "non_actionable_features": ["Spec_0_Cat1","Spec_0_Cat2","Spec_1_Cat1","Spec_1_Cat10","Spec_1_Cat11","Spec_1_Cat12","Spec_1_Cat13","Spec_1_Cat14","Spec_1_Cat15","Spec_1_Cat16","Spec_1_Cat17","Spec_1_Cat18","Spec_1_Cat2","Spec_1_Cat22","Spec_1_Cat23","Spec_1_Cat3","Spec_1_Cat4","Spec_1_Cat5","Spec_1_Cat6","Spec_1_Cat7","Spec_1_Cat8","Spec_1_Cat9","Spec_2_Cat1","Spec_2_Cat10","Spec_2_Cat13","Spec_2_Cat14","Spec_2_Cat15","Spec_2_Cat2","Spec_2_Cat3","Spec_2_Cat5","Spec_2_Cat6","Spec_2_Cat7","Spec_2_Cat8","Spec_2_Cat9","Spec_3_Cat1","Spec_3_Cat2","Spec_3_Cat3","Spec_4_Cat1","Spec_5_Cat1","Spec_5_Cat2","Spec_5_Cat3","Spec_5_Cat4","Spec_6_Cat1","Spec_6_Cat12","Spec_6_Cat2","Spec_6_Cat3","Spec_6_Cat4","Spec_6_Cat5","Spec_6_Cat9","Spec_7_Cat1","Spec_7_Cat2","Spec_7_Cat3","Spec_7_Cat4","Spec_7_Cat5","Spec_7_Cat6","Spec_7_Cat7"],
-        "non_actionable_original": ["Spec_0_Cat1","Spec_0_Cat2","Spec_1_Cat1","Spec_1_Cat10","Spec_1_Cat11","Spec_1_Cat12","Spec_1_Cat13","Spec_1_Cat14","Spec_1_Cat15","Spec_1_Cat16","Spec_1_Cat17","Spec_1_Cat18","Spec_1_Cat2","Spec_1_Cat22","Spec_1_Cat23","Spec_1_Cat3","Spec_1_Cat4","Spec_1_Cat5","Spec_1_Cat6","Spec_1_Cat7","Spec_1_Cat8","Spec_1_Cat9","Spec_2_Cat1","Spec_2_Cat10","Spec_2_Cat13","Spec_2_Cat14","Spec_2_Cat15","Spec_2_Cat2","Spec_2_Cat3","Spec_2_Cat5","Spec_2_Cat6","Spec_2_Cat7","Spec_2_Cat8","Spec_2_Cat9","Spec_3_Cat1","Spec_3_Cat2","Spec_3_Cat3","Spec_4_Cat1","Spec_5_Cat1","Spec_5_Cat2","Spec_5_Cat3","Spec_5_Cat4","Spec_6_Cat1","Spec_6_Cat12","Spec_6_Cat2","Spec_6_Cat3","Spec_6_Cat4","Spec_6_Cat5","Spec_6_Cat9","Spec_7_Cat1","Spec_7_Cat2","Spec_7_Cat3","Spec_7_Cat4","Spec_7_Cat5","Spec_7_Cat6","Spec_7_Cat7"],
+        "non_actionable_features": [
+            "Spec_0_Cat1", "Spec_0_Cat2",
+            "Spec_1_Cat1", "Spec_1_Cat10", "Spec_1_Cat11", "Spec_1_Cat12",
+            "Spec_1_Cat13", "Spec_1_Cat14", "Spec_1_Cat15", "Spec_1_Cat16",
+            "Spec_1_Cat17", "Spec_1_Cat18", "Spec_1_Cat2", "Spec_1_Cat22",
+            "Spec_1_Cat23", "Spec_1_Cat3", "Spec_1_Cat4", "Spec_1_Cat5",
+            "Spec_1_Cat6", "Spec_1_Cat7", "Spec_1_Cat8", "Spec_1_Cat9",
+            "Spec_2_Cat1", "Spec_2_Cat10", "Spec_2_Cat13", "Spec_2_Cat14",
+            "Spec_2_Cat15", "Spec_2_Cat2", "Spec_2_Cat3", "Spec_2_Cat5",
+            "Spec_2_Cat6", "Spec_2_Cat7", "Spec_2_Cat8", "Spec_2_Cat9",
+            "Spec_3_Cat1", "Spec_3_Cat2", "Spec_3_Cat3",
+            "Spec_4_Cat1",
+            "Spec_5_Cat1", "Spec_5_Cat2", "Spec_5_Cat3", "Spec_5_Cat4",
+            "Spec_6_Cat1", "Spec_6_Cat12", "Spec_6_Cat2", "Spec_6_Cat3",
+            "Spec_6_Cat4", "Spec_6_Cat5", "Spec_6_Cat9",
+            "Spec_7_Cat1", "Spec_7_Cat2", "Spec_7_Cat3", "Spec_7_Cat4",
+            "Spec_7_Cat5", "Spec_7_Cat6", "Spec_7_Cat7"
+        ],
+        "non_actionable_original": [
+            "Spec_0_Cat1", "Spec_0_Cat2",
+            "Spec_1_Cat1", "Spec_1_Cat10", "Spec_1_Cat11", "Spec_1_Cat12",
+            "Spec_1_Cat13", "Spec_1_Cat14", "Spec_1_Cat15", "Spec_1_Cat16",
+            "Spec_1_Cat17", "Spec_1_Cat18", "Spec_1_Cat2", "Spec_1_Cat22",
+            "Spec_1_Cat23", "Spec_1_Cat3", "Spec_1_Cat4", "Spec_1_Cat5",
+            "Spec_1_Cat6", "Spec_1_Cat7", "Spec_1_Cat8", "Spec_1_Cat9",
+            "Spec_2_Cat1", "Spec_2_Cat10", "Spec_2_Cat13", "Spec_2_Cat14",
+            "Spec_2_Cat15", "Spec_2_Cat2", "Spec_2_Cat3", "Spec_2_Cat5",
+            "Spec_2_Cat6", "Spec_2_Cat7", "Spec_2_Cat8", "Spec_2_Cat9",
+            "Spec_3_Cat1", "Spec_3_Cat2", "Spec_3_Cat3",
+            "Spec_4_Cat1",
+            "Spec_5_Cat1", "Spec_5_Cat2", "Spec_5_Cat3", "Spec_5_Cat4",
+            "Spec_6_Cat1", "Spec_6_Cat12", "Spec_6_Cat2", "Spec_6_Cat3",
+            "Spec_6_Cat4", "Spec_6_Cat5", "Spec_6_Cat9",
+            "Spec_7_Cat1", "Spec_7_Cat2", "Spec_7_Cat3", "Spec_7_Cat4",
+            "Spec_7_Cat5", "Spec_7_Cat6", "Spec_7_Cat7"
+        ],
     },
     "SCANIAn": {
         "path": "Data/SCANIA/SCANIA_rtfn.csv",
@@ -61,8 +111,42 @@ dataset_info = {
         "test_sources": get_scania_test_sources(),
         "no_event_value": None,
         "limit": False,
-        "non_actionable_features": ["Spec_0_Cat1","Spec_0_Cat2","Spec_1_Cat1","Spec_1_Cat10","Spec_1_Cat11","Spec_1_Cat12","Spec_1_Cat13","Spec_1_Cat14","Spec_1_Cat15","Spec_1_Cat16","Spec_1_Cat17","Spec_1_Cat18","Spec_1_Cat2","Spec_1_Cat22","Spec_1_Cat23","Spec_1_Cat3","Spec_1_Cat4","Spec_1_Cat5","Spec_1_Cat6","Spec_1_Cat7","Spec_1_Cat8","Spec_1_Cat9","Spec_2_Cat1","Spec_2_Cat10","Spec_2_Cat13","Spec_2_Cat14","Spec_2_Cat15","Spec_2_Cat2","Spec_2_Cat3","Spec_2_Cat5","Spec_2_Cat6","Spec_2_Cat7","Spec_2_Cat8","Spec_2_Cat9","Spec_3_Cat1","Spec_3_Cat2","Spec_3_Cat3","Spec_4_Cat1","Spec_5_Cat1","Spec_5_Cat2","Spec_5_Cat3","Spec_5_Cat4","Spec_6_Cat1","Spec_6_Cat12","Spec_6_Cat2","Spec_6_Cat3","Spec_6_Cat4","Spec_6_Cat5","Spec_6_Cat9","Spec_7_Cat1","Spec_7_Cat2","Spec_7_Cat3","Spec_7_Cat4","Spec_7_Cat5","Spec_7_Cat6","Spec_7_Cat7"],
-        "non_actionable_original": ["Spec_0_Cat1","Spec_0_Cat2","Spec_1_Cat1","Spec_1_Cat10","Spec_1_Cat11","Spec_1_Cat12","Spec_1_Cat13","Spec_1_Cat14","Spec_1_Cat15","Spec_1_Cat16","Spec_1_Cat17","Spec_1_Cat18","Spec_1_Cat2","Spec_1_Cat22","Spec_1_Cat23","Spec_1_Cat3","Spec_1_Cat4","Spec_1_Cat5","Spec_1_Cat6","Spec_1_Cat7","Spec_1_Cat8","Spec_1_Cat9","Spec_2_Cat1","Spec_2_Cat10","Spec_2_Cat13","Spec_2_Cat14","Spec_2_Cat15","Spec_2_Cat2","Spec_2_Cat3","Spec_2_Cat5","Spec_2_Cat6","Spec_2_Cat7","Spec_2_Cat8","Spec_2_Cat9","Spec_3_Cat1","Spec_3_Cat2","Spec_3_Cat3","Spec_4_Cat1","Spec_5_Cat1","Spec_5_Cat2","Spec_5_Cat3","Spec_5_Cat4","Spec_6_Cat1","Spec_6_Cat12","Spec_6_Cat2","Spec_6_Cat3","Spec_6_Cat4","Spec_6_Cat5","Spec_6_Cat9","Spec_7_Cat1","Spec_7_Cat2","Spec_7_Cat3","Spec_7_Cat4","Spec_7_Cat5","Spec_7_Cat6","Spec_7_Cat7"],
+        "non_actionable_features": [
+            "Spec_0_Cat1", "Spec_0_Cat2",
+            "Spec_1_Cat1", "Spec_1_Cat10", "Spec_1_Cat11", "Spec_1_Cat12",
+            "Spec_1_Cat13", "Spec_1_Cat14", "Spec_1_Cat15", "Spec_1_Cat16",
+            "Spec_1_Cat17", "Spec_1_Cat18", "Spec_1_Cat2", "Spec_1_Cat22",
+            "Spec_1_Cat23", "Spec_1_Cat3", "Spec_1_Cat4", "Spec_1_Cat5",
+            "Spec_1_Cat6", "Spec_1_Cat7", "Spec_1_Cat8", "Spec_1_Cat9",
+            "Spec_2_Cat1", "Spec_2_Cat10", "Spec_2_Cat13", "Spec_2_Cat14",
+            "Spec_2_Cat15", "Spec_2_Cat2", "Spec_2_Cat3", "Spec_2_Cat5",
+            "Spec_2_Cat6", "Spec_2_Cat7", "Spec_2_Cat8", "Spec_2_Cat9",
+            "Spec_3_Cat1", "Spec_3_Cat2", "Spec_3_Cat3",
+            "Spec_4_Cat1",
+            "Spec_5_Cat1", "Spec_5_Cat2", "Spec_5_Cat3", "Spec_5_Cat4",
+            "Spec_6_Cat1", "Spec_6_Cat12", "Spec_6_Cat2", "Spec_6_Cat3",
+            "Spec_6_Cat4", "Spec_6_Cat5", "Spec_6_Cat9",
+            "Spec_7_Cat1", "Spec_7_Cat2", "Spec_7_Cat3", "Spec_7_Cat4",
+            "Spec_7_Cat5", "Spec_7_Cat6", "Spec_7_Cat7"
+        ],
+        "non_actionable_original": [
+            "Spec_0_Cat1", "Spec_0_Cat2",
+            "Spec_1_Cat1", "Spec_1_Cat10", "Spec_1_Cat11", "Spec_1_Cat12",
+            "Spec_1_Cat13", "Spec_1_Cat14", "Spec_1_Cat15", "Spec_1_Cat16",
+            "Spec_1_Cat17", "Spec_1_Cat18", "Spec_1_Cat2", "Spec_1_Cat22",
+            "Spec_1_Cat23", "Spec_1_Cat3", "Spec_1_Cat4", "Spec_1_Cat5",
+            "Spec_1_Cat6", "Spec_1_Cat7", "Spec_1_Cat8", "Spec_1_Cat9",
+            "Spec_2_Cat1", "Spec_2_Cat10", "Spec_2_Cat13", "Spec_2_Cat14",
+            "Spec_2_Cat15", "Spec_2_Cat2", "Spec_2_Cat3", "Spec_2_Cat5",
+            "Spec_2_Cat6", "Spec_2_Cat7", "Spec_2_Cat8", "Spec_2_Cat9",
+            "Spec_3_Cat1", "Spec_3_Cat2", "Spec_3_Cat3",
+            "Spec_4_Cat1",
+            "Spec_5_Cat1", "Spec_5_Cat2", "Spec_5_Cat3", "Spec_5_Cat4",
+            "Spec_6_Cat1", "Spec_6_Cat12", "Spec_6_Cat2", "Spec_6_Cat3",
+            "Spec_6_Cat4", "Spec_6_Cat5", "Spec_6_Cat9",
+            "Spec_7_Cat1", "Spec_7_Cat2", "Spec_7_Cat3", "Spec_7_Cat4",
+            "Spec_7_Cat5", "Spec_7_Cat6", "Spec_7_Cat7"
+        ],
     },
     "SCANIA10": {
         "path": "Data/SCANIA/SCANIA_rtfn_10.csv",
@@ -73,8 +157,42 @@ dataset_info = {
         "test_sources": get_scania_test_sources(),
         "no_event_value": None,
         "limit": False,
-        "non_actionable_features": ["Spec_0_Cat1","Spec_0_Cat2","Spec_1_Cat1","Spec_1_Cat10","Spec_1_Cat11","Spec_1_Cat12","Spec_1_Cat13","Spec_1_Cat14","Spec_1_Cat15","Spec_1_Cat16","Spec_1_Cat17","Spec_1_Cat18","Spec_1_Cat2","Spec_1_Cat22","Spec_1_Cat23","Spec_1_Cat3","Spec_1_Cat4","Spec_1_Cat5","Spec_1_Cat6","Spec_1_Cat7","Spec_1_Cat8","Spec_1_Cat9","Spec_2_Cat1","Spec_2_Cat10","Spec_2_Cat13","Spec_2_Cat14","Spec_2_Cat15","Spec_2_Cat2","Spec_2_Cat3","Spec_2_Cat5","Spec_2_Cat6","Spec_2_Cat7","Spec_2_Cat8","Spec_2_Cat9","Spec_3_Cat1","Spec_3_Cat2","Spec_3_Cat3","Spec_4_Cat1","Spec_5_Cat1","Spec_5_Cat2","Spec_5_Cat3","Spec_5_Cat4","Spec_6_Cat1","Spec_6_Cat12","Spec_6_Cat2","Spec_6_Cat3","Spec_6_Cat4","Spec_6_Cat5","Spec_6_Cat9","Spec_7_Cat1","Spec_7_Cat2","Spec_7_Cat3","Spec_7_Cat4","Spec_7_Cat5","Spec_7_Cat6","Spec_7_Cat7"],
-        "non_actionable_original": ["Spec_0_Cat1","Spec_0_Cat2","Spec_1_Cat1","Spec_1_Cat10","Spec_1_Cat11","Spec_1_Cat12","Spec_1_Cat13","Spec_1_Cat14","Spec_1_Cat15","Spec_1_Cat16","Spec_1_Cat17","Spec_1_Cat18","Spec_1_Cat2","Spec_1_Cat22","Spec_1_Cat23","Spec_1_Cat3","Spec_1_Cat4","Spec_1_Cat5","Spec_1_Cat6","Spec_1_Cat7","Spec_1_Cat8","Spec_1_Cat9","Spec_2_Cat1","Spec_2_Cat10","Spec_2_Cat13","Spec_2_Cat14","Spec_2_Cat15","Spec_2_Cat2","Spec_2_Cat3","Spec_2_Cat5","Spec_2_Cat6","Spec_2_Cat7","Spec_2_Cat8","Spec_2_Cat9","Spec_3_Cat1","Spec_3_Cat2","Spec_3_Cat3","Spec_4_Cat1","Spec_5_Cat1","Spec_5_Cat2","Spec_5_Cat3","Spec_5_Cat4","Spec_6_Cat1","Spec_6_Cat12","Spec_6_Cat2","Spec_6_Cat3","Spec_6_Cat4","Spec_6_Cat5","Spec_6_Cat9","Spec_7_Cat1","Spec_7_Cat2","Spec_7_Cat3","Spec_7_Cat4","Spec_7_Cat5","Spec_7_Cat6","Spec_7_Cat7"],
+        "non_actionable_features": [
+            "Spec_0_Cat1", "Spec_0_Cat2",
+            "Spec_1_Cat1", "Spec_1_Cat10", "Spec_1_Cat11", "Spec_1_Cat12",
+            "Spec_1_Cat13", "Spec_1_Cat14", "Spec_1_Cat15", "Spec_1_Cat16",
+            "Spec_1_Cat17", "Spec_1_Cat18", "Spec_1_Cat2", "Spec_1_Cat22",
+            "Spec_1_Cat23", "Spec_1_Cat3", "Spec_1_Cat4", "Spec_1_Cat5",
+            "Spec_1_Cat6", "Spec_1_Cat7", "Spec_1_Cat8", "Spec_1_Cat9",
+            "Spec_2_Cat1", "Spec_2_Cat10", "Spec_2_Cat13", "Spec_2_Cat14",
+            "Spec_2_Cat15", "Spec_2_Cat2", "Spec_2_Cat3", "Spec_2_Cat5",
+            "Spec_2_Cat6", "Spec_2_Cat7", "Spec_2_Cat8", "Spec_2_Cat9",
+            "Spec_3_Cat1", "Spec_3_Cat2", "Spec_3_Cat3",
+            "Spec_4_Cat1",
+            "Spec_5_Cat1", "Spec_5_Cat2", "Spec_5_Cat3", "Spec_5_Cat4",
+            "Spec_6_Cat1", "Spec_6_Cat12", "Spec_6_Cat2", "Spec_6_Cat3",
+            "Spec_6_Cat4", "Spec_6_Cat5", "Spec_6_Cat9",
+            "Spec_7_Cat1", "Spec_7_Cat2", "Spec_7_Cat3", "Spec_7_Cat4",
+            "Spec_7_Cat5", "Spec_7_Cat6", "Spec_7_Cat7"
+        ],
+        "non_actionable_original": [
+            "Spec_0_Cat1", "Spec_0_Cat2",
+            "Spec_1_Cat1", "Spec_1_Cat10", "Spec_1_Cat11", "Spec_1_Cat12",
+            "Spec_1_Cat13", "Spec_1_Cat14", "Spec_1_Cat15", "Spec_1_Cat16",
+            "Spec_1_Cat17", "Spec_1_Cat18", "Spec_1_Cat2", "Spec_1_Cat22",
+            "Spec_1_Cat23", "Spec_1_Cat3", "Spec_1_Cat4", "Spec_1_Cat5",
+            "Spec_1_Cat6", "Spec_1_Cat7", "Spec_1_Cat8", "Spec_1_Cat9",
+            "Spec_2_Cat1", "Spec_2_Cat10", "Spec_2_Cat13", "Spec_2_Cat14",
+            "Spec_2_Cat15", "Spec_2_Cat2", "Spec_2_Cat3", "Spec_2_Cat5",
+            "Spec_2_Cat6", "Spec_2_Cat7", "Spec_2_Cat8", "Spec_2_Cat9",
+            "Spec_3_Cat1", "Spec_3_Cat2", "Spec_3_Cat3",
+            "Spec_4_Cat1",
+            "Spec_5_Cat1", "Spec_5_Cat2", "Spec_5_Cat3", "Spec_5_Cat4",
+            "Spec_6_Cat1", "Spec_6_Cat12", "Spec_6_Cat2", "Spec_6_Cat3",
+            "Spec_6_Cat4", "Spec_6_Cat5", "Spec_6_Cat9",
+            "Spec_7_Cat1", "Spec_7_Cat2", "Spec_7_Cat3", "Spec_7_Cat4",
+            "Spec_7_Cat5", "Spec_7_Cat6", "Spec_7_Cat7"
+        ],
     },
     "SCANIA25": {
         "path": "Data/SCANIA/SCANIA_rtfn_25.csv",
@@ -85,8 +203,42 @@ dataset_info = {
         "test_sources": get_scania_test_sources(),
         "no_event_value": None,
         "limit": False,
-        "non_actionable_features": ["Spec_0_Cat1","Spec_0_Cat2","Spec_1_Cat1","Spec_1_Cat10","Spec_1_Cat11","Spec_1_Cat12","Spec_1_Cat13","Spec_1_Cat14","Spec_1_Cat15","Spec_1_Cat16","Spec_1_Cat17","Spec_1_Cat18","Spec_1_Cat2","Spec_1_Cat22","Spec_1_Cat23","Spec_1_Cat3","Spec_1_Cat4","Spec_1_Cat5","Spec_1_Cat6","Spec_1_Cat7","Spec_1_Cat8","Spec_1_Cat9","Spec_2_Cat1","Spec_2_Cat10","Spec_2_Cat13","Spec_2_Cat14","Spec_2_Cat15","Spec_2_Cat2","Spec_2_Cat3","Spec_2_Cat5","Spec_2_Cat6","Spec_2_Cat7","Spec_2_Cat8","Spec_2_Cat9","Spec_3_Cat1","Spec_3_Cat2","Spec_3_Cat3","Spec_4_Cat1","Spec_5_Cat1","Spec_5_Cat2","Spec_5_Cat3","Spec_5_Cat4","Spec_6_Cat1","Spec_6_Cat12","Spec_6_Cat2","Spec_6_Cat3","Spec_6_Cat4","Spec_6_Cat5","Spec_6_Cat9","Spec_7_Cat1","Spec_7_Cat2","Spec_7_Cat3","Spec_7_Cat4","Spec_7_Cat5","Spec_7_Cat6","Spec_7_Cat7"],
-        "non_actionable_original": ["Spec_0_Cat1","Spec_0_Cat2","Spec_1_Cat1","Spec_1_Cat10","Spec_1_Cat11","Spec_1_Cat12","Spec_1_Cat13","Spec_1_Cat14","Spec_1_Cat15","Spec_1_Cat16","Spec_1_Cat17","Spec_1_Cat18","Spec_1_Cat2","Spec_1_Cat22","Spec_1_Cat23","Spec_1_Cat3","Spec_1_Cat4","Spec_1_Cat5","Spec_1_Cat6","Spec_1_Cat7","Spec_1_Cat8","Spec_1_Cat9","Spec_2_Cat1","Spec_2_Cat10","Spec_2_Cat13","Spec_2_Cat14","Spec_2_Cat15","Spec_2_Cat2","Spec_2_Cat3","Spec_2_Cat5","Spec_2_Cat6","Spec_2_Cat7","Spec_2_Cat8","Spec_2_Cat9","Spec_3_Cat1","Spec_3_Cat2","Spec_3_Cat3","Spec_4_Cat1","Spec_5_Cat1","Spec_5_Cat2","Spec_5_Cat3","Spec_5_Cat4","Spec_6_Cat1","Spec_6_Cat12","Spec_6_Cat2","Spec_6_Cat3","Spec_6_Cat4","Spec_6_Cat5","Spec_6_Cat9","Spec_7_Cat1","Spec_7_Cat2","Spec_7_Cat3","Spec_7_Cat4","Spec_7_Cat5","Spec_7_Cat6","Spec_7_Cat7"],
+        "non_actionable_features": [
+            "Spec_0_Cat1", "Spec_0_Cat2",
+            "Spec_1_Cat1", "Spec_1_Cat10", "Spec_1_Cat11", "Spec_1_Cat12",
+            "Spec_1_Cat13", "Spec_1_Cat14", "Spec_1_Cat15", "Spec_1_Cat16",
+            "Spec_1_Cat17", "Spec_1_Cat18", "Spec_1_Cat2", "Spec_1_Cat22",
+            "Spec_1_Cat23", "Spec_1_Cat3", "Spec_1_Cat4", "Spec_1_Cat5",
+            "Spec_1_Cat6", "Spec_1_Cat7", "Spec_1_Cat8", "Spec_1_Cat9",
+            "Spec_2_Cat1", "Spec_2_Cat10", "Spec_2_Cat13", "Spec_2_Cat14",
+            "Spec_2_Cat15", "Spec_2_Cat2", "Spec_2_Cat3", "Spec_2_Cat5",
+            "Spec_2_Cat6", "Spec_2_Cat7", "Spec_2_Cat8", "Spec_2_Cat9",
+            "Spec_3_Cat1", "Spec_3_Cat2", "Spec_3_Cat3",
+            "Spec_4_Cat1",
+            "Spec_5_Cat1", "Spec_5_Cat2", "Spec_5_Cat3", "Spec_5_Cat4",
+            "Spec_6_Cat1", "Spec_6_Cat12", "Spec_6_Cat2", "Spec_6_Cat3",
+            "Spec_6_Cat4", "Spec_6_Cat5", "Spec_6_Cat9",
+            "Spec_7_Cat1", "Spec_7_Cat2", "Spec_7_Cat3", "Spec_7_Cat4",
+            "Spec_7_Cat5", "Spec_7_Cat6", "Spec_7_Cat7"
+        ],
+        "non_actionable_original": [
+            "Spec_0_Cat1", "Spec_0_Cat2",
+            "Spec_1_Cat1", "Spec_1_Cat10", "Spec_1_Cat11", "Spec_1_Cat12",
+            "Spec_1_Cat13", "Spec_1_Cat14", "Spec_1_Cat15", "Spec_1_Cat16",
+            "Spec_1_Cat17", "Spec_1_Cat18", "Spec_1_Cat2", "Spec_1_Cat22",
+            "Spec_1_Cat23", "Spec_1_Cat3", "Spec_1_Cat4", "Spec_1_Cat5",
+            "Spec_1_Cat6", "Spec_1_Cat7", "Spec_1_Cat8", "Spec_1_Cat9",
+            "Spec_2_Cat1", "Spec_2_Cat10", "Spec_2_Cat13", "Spec_2_Cat14",
+            "Spec_2_Cat15", "Spec_2_Cat2", "Spec_2_Cat3", "Spec_2_Cat5",
+            "Spec_2_Cat6", "Spec_2_Cat7", "Spec_2_Cat8", "Spec_2_Cat9",
+            "Spec_3_Cat1", "Spec_3_Cat2", "Spec_3_Cat3",
+            "Spec_4_Cat1",
+            "Spec_5_Cat1", "Spec_5_Cat2", "Spec_5_Cat3", "Spec_5_Cat4",
+            "Spec_6_Cat1", "Spec_6_Cat12", "Spec_6_Cat2", "Spec_6_Cat3",
+            "Spec_6_Cat4", "Spec_6_Cat5", "Spec_6_Cat9",
+            "Spec_7_Cat1", "Spec_7_Cat2", "Spec_7_Cat3", "Spec_7_Cat4",
+            "Spec_7_Cat5", "Spec_7_Cat6", "Spec_7_Cat7"
+        ],
     },
     "SCANIA50": {
         "path": "Data/SCANIA/SCANIA_rtfn_50.csv",
@@ -97,8 +249,42 @@ dataset_info = {
         "test_sources": get_scania_test_sources(),
         "no_event_value": None,
         "limit": False,
-        "non_actionable_features": ["Spec_0_Cat1","Spec_0_Cat2","Spec_1_Cat1","Spec_1_Cat10","Spec_1_Cat11","Spec_1_Cat12","Spec_1_Cat13","Spec_1_Cat14","Spec_1_Cat15","Spec_1_Cat16","Spec_1_Cat17","Spec_1_Cat18","Spec_1_Cat2","Spec_1_Cat22","Spec_1_Cat23","Spec_1_Cat3","Spec_1_Cat4","Spec_1_Cat5","Spec_1_Cat6","Spec_1_Cat7","Spec_1_Cat8","Spec_1_Cat9","Spec_2_Cat1","Spec_2_Cat10","Spec_2_Cat13","Spec_2_Cat14","Spec_2_Cat15","Spec_2_Cat2","Spec_2_Cat3","Spec_2_Cat5","Spec_2_Cat6","Spec_2_Cat7","Spec_2_Cat8","Spec_2_Cat9","Spec_3_Cat1","Spec_3_Cat2","Spec_3_Cat3","Spec_4_Cat1","Spec_5_Cat1","Spec_5_Cat2","Spec_5_Cat3","Spec_5_Cat4","Spec_6_Cat1","Spec_6_Cat12","Spec_6_Cat2","Spec_6_Cat3","Spec_6_Cat4","Spec_6_Cat5","Spec_6_Cat9","Spec_7_Cat1","Spec_7_Cat2","Spec_7_Cat3","Spec_7_Cat4","Spec_7_Cat5","Spec_7_Cat6","Spec_7_Cat7"],
-        "non_actionable_original": ["Spec_0_Cat1","Spec_0_Cat2","Spec_1_Cat1","Spec_1_Cat10","Spec_1_Cat11","Spec_1_Cat12","Spec_1_Cat13","Spec_1_Cat14","Spec_1_Cat15","Spec_1_Cat16","Spec_1_Cat17","Spec_1_Cat18","Spec_1_Cat2","Spec_1_Cat22","Spec_1_Cat23","Spec_1_Cat3","Spec_1_Cat4","Spec_1_Cat5","Spec_1_Cat6","Spec_1_Cat7","Spec_1_Cat8","Spec_1_Cat9","Spec_2_Cat1","Spec_2_Cat10","Spec_2_Cat13","Spec_2_Cat14","Spec_2_Cat15","Spec_2_Cat2","Spec_2_Cat3","Spec_2_Cat5","Spec_2_Cat6","Spec_2_Cat7","Spec_2_Cat8","Spec_2_Cat9","Spec_3_Cat1","Spec_3_Cat2","Spec_3_Cat3","Spec_4_Cat1","Spec_5_Cat1","Spec_5_Cat2","Spec_5_Cat3","Spec_5_Cat4","Spec_6_Cat1","Spec_6_Cat12","Spec_6_Cat2","Spec_6_Cat3","Spec_6_Cat4","Spec_6_Cat5","Spec_6_Cat9","Spec_7_Cat1","Spec_7_Cat2","Spec_7_Cat3","Spec_7_Cat4","Spec_7_Cat5","Spec_7_Cat6","Spec_7_Cat7"],
+        "non_actionable_features": [
+            "Spec_0_Cat1", "Spec_0_Cat2",
+            "Spec_1_Cat1", "Spec_1_Cat10", "Spec_1_Cat11", "Spec_1_Cat12",
+            "Spec_1_Cat13", "Spec_1_Cat14", "Spec_1_Cat15", "Spec_1_Cat16",
+            "Spec_1_Cat17", "Spec_1_Cat18", "Spec_1_Cat2", "Spec_1_Cat22",
+            "Spec_1_Cat23", "Spec_1_Cat3", "Spec_1_Cat4", "Spec_1_Cat5",
+            "Spec_1_Cat6", "Spec_1_Cat7", "Spec_1_Cat8", "Spec_1_Cat9",
+            "Spec_2_Cat1", "Spec_2_Cat10", "Spec_2_Cat13", "Spec_2_Cat14",
+            "Spec_2_Cat15", "Spec_2_Cat2", "Spec_2_Cat3", "Spec_2_Cat5",
+            "Spec_2_Cat6", "Spec_2_Cat7", "Spec_2_Cat8", "Spec_2_Cat9",
+            "Spec_3_Cat1", "Spec_3_Cat2", "Spec_3_Cat3",
+            "Spec_4_Cat1",
+            "Spec_5_Cat1", "Spec_5_Cat2", "Spec_5_Cat3", "Spec_5_Cat4",
+            "Spec_6_Cat1", "Spec_6_Cat12", "Spec_6_Cat2", "Spec_6_Cat3",
+            "Spec_6_Cat4", "Spec_6_Cat5", "Spec_6_Cat9",
+            "Spec_7_Cat1", "Spec_7_Cat2", "Spec_7_Cat3", "Spec_7_Cat4",
+            "Spec_7_Cat5", "Spec_7_Cat6", "Spec_7_Cat7"
+        ],
+        "non_actionable_original": [
+            "Spec_0_Cat1", "Spec_0_Cat2",
+            "Spec_1_Cat1", "Spec_1_Cat10", "Spec_1_Cat11", "Spec_1_Cat12",
+            "Spec_1_Cat13", "Spec_1_Cat14", "Spec_1_Cat15", "Spec_1_Cat16",
+            "Spec_1_Cat17", "Spec_1_Cat18", "Spec_1_Cat2", "Spec_1_Cat22",
+            "Spec_1_Cat23", "Spec_1_Cat3", "Spec_1_Cat4", "Spec_1_Cat5",
+            "Spec_1_Cat6", "Spec_1_Cat7", "Spec_1_Cat8", "Spec_1_Cat9",
+            "Spec_2_Cat1", "Spec_2_Cat10", "Spec_2_Cat13", "Spec_2_Cat14",
+            "Spec_2_Cat15", "Spec_2_Cat2", "Spec_2_Cat3", "Spec_2_Cat5",
+            "Spec_2_Cat6", "Spec_2_Cat7", "Spec_2_Cat8", "Spec_2_Cat9",
+            "Spec_3_Cat1", "Spec_3_Cat2", "Spec_3_Cat3",
+            "Spec_4_Cat1",
+            "Spec_5_Cat1", "Spec_5_Cat2", "Spec_5_Cat3", "Spec_5_Cat4",
+            "Spec_6_Cat1", "Spec_6_Cat12", "Spec_6_Cat2", "Spec_6_Cat3",
+            "Spec_6_Cat4", "Spec_6_Cat5", "Spec_6_Cat9",
+            "Spec_7_Cat1", "Spec_7_Cat2", "Spec_7_Cat3", "Spec_7_Cat4",
+            "Spec_7_Cat5", "Spec_7_Cat6", "Spec_7_Cat7"
+        ],
     },
     "SCANIA75": {
         "path": "Data/SCANIA/SCANIA_rtfn_75.csv",
@@ -109,8 +295,42 @@ dataset_info = {
         "test_sources": get_scania_test_sources(),
         "no_event_value": None,
         "limit": False,
-        "non_actionable_features": ["Spec_0_Cat1","Spec_0_Cat2","Spec_1_Cat1","Spec_1_Cat10","Spec_1_Cat11","Spec_1_Cat12","Spec_1_Cat13","Spec_1_Cat14","Spec_1_Cat15","Spec_1_Cat16","Spec_1_Cat17","Spec_1_Cat18","Spec_1_Cat2","Spec_1_Cat22","Spec_1_Cat23","Spec_1_Cat3","Spec_1_Cat4","Spec_1_Cat5","Spec_1_Cat6","Spec_1_Cat7","Spec_1_Cat8","Spec_1_Cat9","Spec_2_Cat1","Spec_2_Cat10","Spec_2_Cat13","Spec_2_Cat14","Spec_2_Cat15","Spec_2_Cat2","Spec_2_Cat3","Spec_2_Cat5","Spec_2_Cat6","Spec_2_Cat7","Spec_2_Cat8","Spec_2_Cat9","Spec_3_Cat1","Spec_3_Cat2","Spec_3_Cat3","Spec_4_Cat1","Spec_5_Cat1","Spec_5_Cat2","Spec_5_Cat3","Spec_5_Cat4","Spec_6_Cat1","Spec_6_Cat12","Spec_6_Cat2","Spec_6_Cat3","Spec_6_Cat4","Spec_6_Cat5","Spec_6_Cat9","Spec_7_Cat1","Spec_7_Cat2","Spec_7_Cat3","Spec_7_Cat4","Spec_7_Cat5","Spec_7_Cat6","Spec_7_Cat7"],
-        "non_actionable_original": ["Spec_0_Cat1","Spec_0_Cat2","Spec_1_Cat1","Spec_1_Cat10","Spec_1_Cat11","Spec_1_Cat12","Spec_1_Cat13","Spec_1_Cat14","Spec_1_Cat15","Spec_1_Cat16","Spec_1_Cat17","Spec_1_Cat18","Spec_1_Cat2","Spec_1_Cat22","Spec_1_Cat23","Spec_1_Cat3","Spec_1_Cat4","Spec_1_Cat5","Spec_1_Cat6","Spec_1_Cat7","Spec_1_Cat8","Spec_1_Cat9","Spec_2_Cat1","Spec_2_Cat10","Spec_2_Cat13","Spec_2_Cat14","Spec_2_Cat15","Spec_2_Cat2","Spec_2_Cat3","Spec_2_Cat5","Spec_2_Cat6","Spec_2_Cat7","Spec_2_Cat8","Spec_2_Cat9","Spec_3_Cat1","Spec_3_Cat2","Spec_3_Cat3","Spec_4_Cat1","Spec_5_Cat1","Spec_5_Cat2","Spec_5_Cat3","Spec_5_Cat4","Spec_6_Cat1","Spec_6_Cat12","Spec_6_Cat2","Spec_6_Cat3","Spec_6_Cat4","Spec_6_Cat5","Spec_6_Cat9","Spec_7_Cat1","Spec_7_Cat2","Spec_7_Cat3","Spec_7_Cat4","Spec_7_Cat5","Spec_7_Cat6","Spec_7_Cat7"],
+        "non_actionable_features": [
+            "Spec_0_Cat1", "Spec_0_Cat2",
+            "Spec_1_Cat1", "Spec_1_Cat10", "Spec_1_Cat11", "Spec_1_Cat12",
+            "Spec_1_Cat13", "Spec_1_Cat14", "Spec_1_Cat15", "Spec_1_Cat16",
+            "Spec_1_Cat17", "Spec_1_Cat18", "Spec_1_Cat2", "Spec_1_Cat22",
+            "Spec_1_Cat23", "Spec_1_Cat3", "Spec_1_Cat4", "Spec_1_Cat5",
+            "Spec_1_Cat6", "Spec_1_Cat7", "Spec_1_Cat8", "Spec_1_Cat9",
+            "Spec_2_Cat1", "Spec_2_Cat10", "Spec_2_Cat13", "Spec_2_Cat14",
+            "Spec_2_Cat15", "Spec_2_Cat2", "Spec_2_Cat3", "Spec_2_Cat5",
+            "Spec_2_Cat6", "Spec_2_Cat7", "Spec_2_Cat8", "Spec_2_Cat9",
+            "Spec_3_Cat1", "Spec_3_Cat2", "Spec_3_Cat3",
+            "Spec_4_Cat1",
+            "Spec_5_Cat1", "Spec_5_Cat2", "Spec_5_Cat3", "Spec_5_Cat4",
+            "Spec_6_Cat1", "Spec_6_Cat12", "Spec_6_Cat2", "Spec_6_Cat3",
+            "Spec_6_Cat4", "Spec_6_Cat5", "Spec_6_Cat9",
+            "Spec_7_Cat1", "Spec_7_Cat2", "Spec_7_Cat3", "Spec_7_Cat4",
+            "Spec_7_Cat5", "Spec_7_Cat6", "Spec_7_Cat7"
+        ],
+        "non_actionable_original": [
+            "Spec_0_Cat1", "Spec_0_Cat2",
+            "Spec_1_Cat1", "Spec_1_Cat10", "Spec_1_Cat11", "Spec_1_Cat12",
+            "Spec_1_Cat13", "Spec_1_Cat14", "Spec_1_Cat15", "Spec_1_Cat16",
+            "Spec_1_Cat17", "Spec_1_Cat18", "Spec_1_Cat2", "Spec_1_Cat22",
+            "Spec_1_Cat23", "Spec_1_Cat3", "Spec_1_Cat4", "Spec_1_Cat5",
+            "Spec_1_Cat6", "Spec_1_Cat7", "Spec_1_Cat8", "Spec_1_Cat9",
+            "Spec_2_Cat1", "Spec_2_Cat10", "Spec_2_Cat13", "Spec_2_Cat14",
+            "Spec_2_Cat15", "Spec_2_Cat2", "Spec_2_Cat3", "Spec_2_Cat5",
+            "Spec_2_Cat6", "Spec_2_Cat7", "Spec_2_Cat8", "Spec_2_Cat9",
+            "Spec_3_Cat1", "Spec_3_Cat2", "Spec_3_Cat3",
+            "Spec_4_Cat1",
+            "Spec_5_Cat1", "Spec_5_Cat2", "Spec_5_Cat3", "Spec_5_Cat4",
+            "Spec_6_Cat1", "Spec_6_Cat12", "Spec_6_Cat2", "Spec_6_Cat3",
+            "Spec_6_Cat4", "Spec_6_Cat5", "Spec_6_Cat9",
+            "Spec_7_Cat1", "Spec_7_Cat2", "Spec_7_Cat3", "Spec_7_Cat4",
+            "Spec_7_Cat5", "Spec_7_Cat6", "Spec_7_Cat7"
+        ],
     },
     "SCANIA100": {
         "path": "Data/SCANIA/SCANIA_rtfn_100.csv",
@@ -121,40 +341,103 @@ dataset_info = {
         "test_sources": get_scania_test_sources(),
         "no_event_value": None,
         "limit": False,
-        "non_actionable_features": ["Spec_0_Cat1","Spec_0_Cat2","Spec_1_Cat1","Spec_1_Cat10","Spec_1_Cat11","Spec_1_Cat12","Spec_1_Cat13","Spec_1_Cat14","Spec_1_Cat15","Spec_1_Cat16","Spec_1_Cat17","Spec_1_Cat18","Spec_1_Cat2","Spec_1_Cat22","Spec_1_Cat23","Spec_1_Cat3","Spec_1_Cat4","Spec_1_Cat5","Spec_1_Cat6","Spec_1_Cat7","Spec_1_Cat8","Spec_1_Cat9","Spec_2_Cat1","Spec_2_Cat10","Spec_2_Cat13","Spec_2_Cat14","Spec_2_Cat15","Spec_2_Cat2","Spec_2_Cat3","Spec_2_Cat5","Spec_2_Cat6","Spec_2_Cat7","Spec_2_Cat8","Spec_2_Cat9","Spec_3_Cat1","Spec_3_Cat2","Spec_3_Cat3","Spec_4_Cat1","Spec_5_Cat1","Spec_5_Cat2","Spec_5_Cat3","Spec_5_Cat4","Spec_6_Cat1","Spec_6_Cat12","Spec_6_Cat2","Spec_6_Cat3","Spec_6_Cat4","Spec_6_Cat5","Spec_6_Cat9","Spec_7_Cat1","Spec_7_Cat2","Spec_7_Cat3","Spec_7_Cat4","Spec_7_Cat5","Spec_7_Cat6","Spec_7_Cat7"],
-        "non_actionable_original": ["Spec_0_Cat1","Spec_0_Cat2","Spec_1_Cat1","Spec_1_Cat10","Spec_1_Cat11","Spec_1_Cat12","Spec_1_Cat13","Spec_1_Cat14","Spec_1_Cat15","Spec_1_Cat16","Spec_1_Cat17","Spec_1_Cat18","Spec_1_Cat2","Spec_1_Cat22","Spec_1_Cat23","Spec_1_Cat3","Spec_1_Cat4","Spec_1_Cat5","Spec_1_Cat6","Spec_1_Cat7","Spec_1_Cat8","Spec_1_Cat9","Spec_2_Cat1","Spec_2_Cat10","Spec_2_Cat13","Spec_2_Cat14","Spec_2_Cat15","Spec_2_Cat2","Spec_2_Cat3","Spec_2_Cat5","Spec_2_Cat6","Spec_2_Cat7","Spec_2_Cat8","Spec_2_Cat9","Spec_3_Cat1","Spec_3_Cat2","Spec_3_Cat3","Spec_4_Cat1","Spec_5_Cat1","Spec_5_Cat2","Spec_5_Cat3","Spec_5_Cat4","Spec_6_Cat1","Spec_6_Cat12","Spec_6_Cat2","Spec_6_Cat3","Spec_6_Cat4","Spec_6_Cat5","Spec_6_Cat9","Spec_7_Cat1","Spec_7_Cat2","Spec_7_Cat3","Spec_7_Cat4","Spec_7_Cat5","Spec_7_Cat6","Spec_7_Cat7"],
+        "non_actionable_features": [
+            "Spec_0_Cat1", "Spec_0_Cat2",
+            "Spec_1_Cat1", "Spec_1_Cat10", "Spec_1_Cat11", "Spec_1_Cat12",
+            "Spec_1_Cat13", "Spec_1_Cat14", "Spec_1_Cat15", "Spec_1_Cat16",
+            "Spec_1_Cat17", "Spec_1_Cat18", "Spec_1_Cat2", "Spec_1_Cat22",
+            "Spec_1_Cat23", "Spec_1_Cat3", "Spec_1_Cat4", "Spec_1_Cat5",
+            "Spec_1_Cat6", "Spec_1_Cat7", "Spec_1_Cat8", "Spec_1_Cat9",
+            "Spec_2_Cat1", "Spec_2_Cat10", "Spec_2_Cat13", "Spec_2_Cat14",
+            "Spec_2_Cat15", "Spec_2_Cat2", "Spec_2_Cat3", "Spec_2_Cat5",
+            "Spec_2_Cat6", "Spec_2_Cat7", "Spec_2_Cat8", "Spec_2_Cat9",
+            "Spec_3_Cat1", "Spec_3_Cat2", "Spec_3_Cat3",
+            "Spec_4_Cat1",
+            "Spec_5_Cat1", "Spec_5_Cat2", "Spec_5_Cat3", "Spec_5_Cat4",
+            "Spec_6_Cat1", "Spec_6_Cat12", "Spec_6_Cat2", "Spec_6_Cat3",
+            "Spec_6_Cat4", "Spec_6_Cat5", "Spec_6_Cat9",
+            "Spec_7_Cat1", "Spec_7_Cat2", "Spec_7_Cat3", "Spec_7_Cat4",
+            "Spec_7_Cat5", "Spec_7_Cat6", "Spec_7_Cat7"
+        ],
+        "non_actionable_original": [
+            "Spec_0_Cat1", "Spec_0_Cat2",
+            "Spec_1_Cat1", "Spec_1_Cat10", "Spec_1_Cat11", "Spec_1_Cat12",
+            "Spec_1_Cat13", "Spec_1_Cat14", "Spec_1_Cat15", "Spec_1_Cat16",
+            "Spec_1_Cat17", "Spec_1_Cat18", "Spec_1_Cat2", "Spec_1_Cat22",
+            "Spec_1_Cat23", "Spec_1_Cat3", "Spec_1_Cat4", "Spec_1_Cat5",
+            "Spec_1_Cat6", "Spec_1_Cat7", "Spec_1_Cat8", "Spec_1_Cat9",
+            "Spec_2_Cat1", "Spec_2_Cat10", "Spec_2_Cat13", "Spec_2_Cat14",
+            "Spec_2_Cat15", "Spec_2_Cat2", "Spec_2_Cat3", "Spec_2_Cat5",
+            "Spec_2_Cat6", "Spec_2_Cat7", "Spec_2_Cat8", "Spec_2_Cat9",
+            "Spec_3_Cat1", "Spec_3_Cat2", "Spec_3_Cat3",
+            "Spec_4_Cat1",
+            "Spec_5_Cat1", "Spec_5_Cat2", "Spec_5_Cat3", "Spec_5_Cat4",
+            "Spec_6_Cat1", "Spec_6_Cat12", "Spec_6_Cat2", "Spec_6_Cat3",
+            "Spec_6_Cat4", "Spec_6_Cat5", "Spec_6_Cat9",
+            "Spec_7_Cat1", "Spec_7_Cat2", "Spec_7_Cat3", "Spec_7_Cat4",
+            "Spec_7_Cat5", "Spec_7_Cat6", "Spec_7_Cat7"
+        ],
+    },
+    "FRA": {
+        "path": "Data/FRA/FRA.parquet",
+        "timestamp_column": "datetime_column",
+        "target": "RUL",
+        "source_column": "source_column",
+        "train_sources": [
+            "Station_1_Ep_0",
+            "Station_1_Ep_1",
+            "Station_1_Ep_2",
+            "Station_1_Ep_7"
+        ],
+        "val_sources": [
+            "Station_1_Ep_36"
+        ],
+        "test_sources": [
+            "Station_1_Ep_38"
+        ],
+        "no_event_value": None,
+        "limit": False,
+        "non_actionable_features": ["active_alarms_count"],
+        "non_actionable_original": ["active_alarms_count"],
     },
 }
 
 
-
+# ============================================================================
+# Helper functions for non‑actionable column detection
+# ============================================================================
 
 def _get_non_actionable_columns_from_original(original_names, all_columns):
     """
-    Given a list of original feature names (e.g., ['sex','age']) and the list of all column names
-    after preprocessing, return a set of column names that should be excluded.
-    Rules:
-      - If the original name appears exactly as a column, include it.
-      - If the original name is categorical and one‑hot encoded, include all columns starting with
-        f"{original_name}_" (e.g., 'sex_').
-      - For PBC's 'age' which becomes 'age_combined', we handle that by looking for a column
-        containing 'age' (case‑insensitive) that is not already captured.
+    Given a list of original feature names and the full column set after preprocessing,
+    return a set of columns that should be marked non‑actionable.
+
+    The function handles:
+      - exact matches
+      - one‑hot encoded columns (pattern: name + '_' + category)
+      - special case for PBC's 'age' → 'age_combined'
     """
     excluded = set()
     for orig in original_names:
-        # exact match
         if orig in all_columns:
             excluded.add(orig)
-        # one‑hot encoded pattern: name + '_'
         pattern = f"{orig}_"
         excluded.update([c for c in all_columns if c.startswith(pattern)])
-        # special handling for age -> age_combined (if no exact match and no underscore pattern)
         if orig.lower() == 'age' and 'age' not in excluded:
             age_cols = [c for c in all_columns if 'age' in c.lower()]
             excluded.update(age_cols)
     return excluded
 
+
+# ============================================================================
+# Dataset loaders
+# ============================================================================
+
 def load_PBC(keep_identifiers=False, rul_sa="sa", path="Data/"):
+    """
+    Load and preprocess the PBC (Primary Biliary Cirrhosis) dataset.
+    Returns train and test datasets compatible with OnlineADEngine.Dataset.
+    """
     from sklearn.impute import SimpleImputer
     from sklearn.preprocessing import StandardScaler
 
@@ -166,7 +449,6 @@ def load_PBC(keep_identifiers=False, rul_sa="sa", path="Data/"):
                     'SGOT', 'platelets', 'prothrombin']]
     age = data['age'] + data['years']
 
-    # One-hot encode categoricals
     x1 = pd.get_dummies(dat_cat).values
     x2 = dat_num.values
     x3 = age.values.reshape(-1, 1)
@@ -179,7 +461,6 @@ def load_PBC(keep_identifiers=False, rul_sa="sa", path="Data/"):
     x = SimpleImputer(missing_values=np.nan, strategy='mean').fit_transform(x)
     x_ = StandardScaler().fit_transform(x)
 
-    # Create meaningful column names
     dummies = pd.get_dummies(dat_cat).columns.tolist()
     num_cols = dat_num.columns.tolist()
     age_col = ['age_combined']
@@ -191,7 +472,6 @@ def load_PBC(keep_identifiers=False, rul_sa="sa", path="Data/"):
     df["source"] = [str(s) for s in sources]
     df = df[df['source'].map(df['source'].value_counts()) >= 5]
 
-    # Determine non‑actionable columns based on dataset_info["PBC"]["non_actionable_original"]
     non_act_orig = dataset_info["PBC"].get("non_actionable_original", [])
     non_actionable_cols = _get_non_actionable_columns_from_original(non_act_orig, df.columns)
 
@@ -217,6 +497,7 @@ def load_PBC(keep_identifiers=False, rul_sa="sa", path="Data/"):
     handler = Dataset(
         data=df,
         datetime_column="Artificial_timestamp",
+        event_indicator='event',
         train_sources=train_sources,
         val_sources=val_sources,
         test_sources=test_sources
@@ -227,36 +508,43 @@ def load_PBC(keep_identifiers=False, rul_sa="sa", path="Data/"):
     else:
         dataset, test_dataset = handler.get_SA_dataset(keep_sources="vehicle_id" if keep_identifiers else None)
 
-    # Attach the non‑actionable column set to the dataset dicts
     dataset['non_actionable_columns'] = non_actionable_cols
     test_dataset['non_actionable_columns'] = non_actionable_cols
 
     return dataset, test_dataset
 
+
 def generic(info):
+    """
+    Generic dataset loader for datasets other than PBC.
+    Supports CSV and Parquet files. The source column can be specified in info['source_column'].
+    """
     if "pbc2" in info["path"]:
-        train_data, test_data = load_PBC(rul_sa="sa", path="Data/")
+        return load_PBC(rul_sa="sa", path="Data/")
+
+    if info["path"].endswith(".parquet"):
+        df = pd.read_parquet(info["path"])
     else:
         df = pd.read_csv(info["path"])
-        dataset_obj = Dataset(
-            data=df,
-            datetime_column=info["timestamp_column"],
-            event_indicator='event',
-            source_column='source',
-            train_sources=info["train_sources"],
-            val_sources=info["val_sources"],
-            test_sources=info["test_sources"]
-        )
-        print("Preparing SA Dataset format...")
-        train_data, test_data = dataset_obj.get_SA_dataset()
 
-        # For non‑PBC datasets (like HNEI), the non‑actionable columns are given by exact names
-        exact_names = info.get("non_actionable_features", set())
-        # Ensure they are a set
-        if isinstance(exact_names, (list, tuple)):
-            exact_names = set(exact_names)
-        # Attach to dataset dicts
-        train_data['non_actionable_columns'] = exact_names
-        test_data['non_actionable_columns'] = exact_names
+    source_col = info.get("source_column", "source")
+
+    dataset_obj = Dataset(
+        data=df,
+        datetime_column=info["timestamp_column"],
+        event_indicator='event',
+        source_column=source_col,
+        train_sources=info["train_sources"],
+        val_sources=info["val_sources"],
+        test_sources=info["test_sources"]
+    )
+    print("Preparing SA Dataset format...")
+    train_data, test_data = dataset_obj.get_SA_dataset()
+
+    exact_names = info.get("non_actionable_features", set())
+    if isinstance(exact_names, (list, tuple)):
+        exact_names = set(exact_names)
+    train_data['non_actionable_columns'] = exact_names
+    test_data['non_actionable_columns'] = exact_names
 
     return train_data, test_data
